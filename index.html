@@ -103,7 +103,7 @@
       formName.addEventListener("submit", function (e) {
         e.preventDefault();
         if (inputName.value) {
-          socket = io("http://localhost:3000", {
+          socket = io(origin, {
             query: `name=${inputName.value}`,
           });
           buttonConnect.disabled = true;
