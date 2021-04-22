@@ -3,15 +3,15 @@ const app = express();
 const http = require("http");
 const server = http.createServer(app);
 const io = require("socket.io")(server);
-
+const port = process.env.PORT || 3000;
 const connectedUsers = [];
 
 app.get("/", (req, res) => {
   res.sendFile(__dirname + "/index.html");
 });
 
-server.listen(80, () => {
-  console.log("listening on *:80");
+server.listen(port, () => {
+  console.log(`listening on ${port}`);
 });
 
 function showConnectedUsers() {
@@ -32,11 +32,11 @@ io.on("connection", (socket) => {
   connectedUsers.push({ name, sessionID });
   console.log("\x1b[36m%s\x1b[0m", userConnectedMessage);
   showConnectedUsers();
-  io.emit('user connected', userConnectedMessage);
+  io.emit("user connected", userConnectedMessage);
 
   socket.on("chat message", (msg) => {
     console.log("message: " + msg);
-    io.emit('chat message', `${name}: ${msg}`);
+    io.emit("chat message", `${name}: ${msg}`);
   });
 
   socket.on("disconnect", () => {
