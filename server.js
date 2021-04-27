@@ -32,8 +32,8 @@ function connectUser(socket) {
   const name = socket.request._query["name"] ?? "A user";
   const sessionID = socket.id;
   connectedUsers.push({ name, sessionID });
-  const userConnectedMessage = `${name} has been connected`;
-  io.emit("user connected", userConnectedMessage);
+  // const userConnectedMessage = `${name} has been connected`;
+  io.emit("user connected", { name });
   return { name, sessionID };
 }
 
