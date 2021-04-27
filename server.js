@@ -4,6 +4,7 @@ const http = require("http");
 const server = http.createServer(app);
 const io = require("socket.io")(server);
 const port = process.env.PORT || 3000;
+const cors = require("cors");
 const connectedUsers = [];
 const consoleColors = {
   blue: "\x1b[36m%s\x1b[0m",
@@ -11,6 +12,8 @@ const consoleColors = {
   white: "\x1b[47m\x1b[0m",
   cyan: "\x1b[36m%s\x1b[0m",
 };
+
+app.use(cors()); // <---- use cors middleware
 
 app.get("/", (req, res) => {
   res.sendFile(__dirname + "/index.html");
@@ -32,7 +35,6 @@ function connectUser(socket) {
   const name = socket.request._query["name"] ?? "A user";
   const sessionID = socket.id;
   connectedUsers.push({ name, sessionID });
-  // const userConnectedMessage = `${name} has been connected`;
   io.emit("user connected", { name });
   return { name, sessionID };
 }
