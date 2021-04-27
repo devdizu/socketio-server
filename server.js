@@ -2,9 +2,16 @@ const express = require("express");
 const app = express();
 const http = require("http");
 const server = http.createServer(app);
-const io = require("socket.io")(server);
-const port = process.env.PORT || 3000;
-const cors = require("cors");
+const io = require("socket.io")(server, {
+  cors: {
+    origins: [
+      "http://localhost:3000",
+      "https://socketio-next-4v47fj2ao-devdizu.vercel.app/",
+    ],
+    methods: ["GET", "POST"],
+  },
+});
+const port = process.env.PORT || 3001;
 const connectedUsers = [];
 const consoleColors = {
   blue: "\x1b[36m%s\x1b[0m",
@@ -12,8 +19,6 @@ const consoleColors = {
   white: "\x1b[47m\x1b[0m",
   cyan: "\x1b[36m%s\x1b[0m",
 };
-
-app.use(cors()); // <---- use cors middleware
 
 app.get("/", (req, res) => {
   res.sendFile(__dirname + "/index.html");
