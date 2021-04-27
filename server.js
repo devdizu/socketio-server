@@ -46,12 +46,12 @@ function disconnectUser(sessionID) {
 }
 
 io.on("connection", (socket) => {
-  const { name, sessionID } = connectUser(socket);
+  const { sessionID } = connectUser(socket);
   showConnectedUsers();
 
-  socket.on("chat message", (msg) => {
-    log("white", "message: " + msg);
-    io.emit("chat message", `${name}: ${msg}`);
+  socket.on("chat message", (messageData) => {
+    log("white", "message: " + JSON.stringify(messageData));
+    io.emit("chat message", messageData);
   });
 
   socket.on("disconnect", () => {
